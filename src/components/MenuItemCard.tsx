@@ -1,7 +1,6 @@
 import { Card, Typography, Button, Box, CardMedia } from "@mui/material";
 import { MenuItem } from "@/interfaces/MenuItem";
 import { useCart } from "@/context/CartContext";
-import Image from "next/image";
 
 interface Props {
   item: MenuItem;
