@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
       }),
     });
   } catch(error) {
-    console.error("Error en GET /api/restaurant/menu", error);
-    return NextResponse.json({ error }, { status: 500 });
+    console.error("Error en GET /api/restaurant/menu", JSON.stringify(error));
+    return NextResponse.json({ error: JSON.stringify(error) }, { status: 500 });
   }
 }
