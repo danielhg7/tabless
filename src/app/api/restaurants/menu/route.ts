@@ -49,6 +49,6 @@ export async function GET(req: NextRequest) {
     });
   } catch(error) {
     console.error("Error en GET /api/restaurant/menu", error);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 });
   }
 }
