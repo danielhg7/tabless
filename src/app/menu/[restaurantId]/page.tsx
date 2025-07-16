@@ -51,7 +51,7 @@ export default function MenuPage() {
   }
 
   return (
-    <Container sx={{ py: 4 }}>
+    <Container maxWidth={false} sx={{ py: 4, maxWidth: "1600px" }}>
       <Typography variant="h4" gutterBottom>
         Menú de {restaurantId?.toString().replace("-", " ")}
       </Typography>
@@ -59,7 +59,7 @@ export default function MenuPage() {
       <>
         <Grid container spacing={2}>
           {menu.map((item) => (
-            <Grid size={{ xs: 12,sm: 8, md: 6 }} key={item.id}>
+            <Grid size={{ xs: 12,sm: 6, md: 3 }} key={item.id}>
               <MenuItemCard item={item} />
             </Grid>
           ))}

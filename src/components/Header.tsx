@@ -11,7 +11,7 @@ export const Header = () => {
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <AppBar position="sticky" sx={{ bgcolor: "#0DB8AE" }}>
+    <AppBar position="sticky" sx={{ bgcolor: "#2C3E50" }}>
       <Toolbar>
         {/* Logo y nombre de la app */}
         <Link href="/" passHref>
@@ -36,7 +36,7 @@ export const Header = () => {
         <Link href="/order" passHref>
           <IconButton
             sx={{
-              bgcolor: "#0DB8AE",
+              bgcolor: "#2C3E50",
               color: "white",
               "&:hover": {
                 bgcolor: "#0aa097", // un tono más oscuro al hacer hover

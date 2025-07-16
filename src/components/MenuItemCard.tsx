@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, Button, Box, CardActions } from "@mui/material";
+import { Card, Typography, Button, Box, CardMedia } from "@mui/material";
 import { MenuItem } from "@/interfaces/MenuItem";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
@@ -14,33 +14,23 @@ export const MenuItemCard = ({ item }: Props) => {
     <Card sx={{
       display: "flex",
       alignItems: "center",
-      backgroundColor: "#FCDC3F", // Amarillo
+      backgroundColor: "#F4D03F",
       borderRadius: "12px",
-      border: "1px solid #00000033",
+      border: "2px solid #2C3E50",
       padding: 1.5,
       boxShadow: "none",
-      maxWidth: 720,
+      width: "100%",
       margin: "0 auto",
+      cursor: "pointer"
+    }} onClick={() => {
+      console.log("Item clickeado");
     }}>
-      {/* Imagen del producto */}
-
-      <Box
-        sx={{
-          position: "relative",
-          width: 100,
-          height: 100,
-          borderRadius: "8px",
-          overflow: "hidden",
-          flexShrink: 0,
-        }}
-      >
-        <Image
-          src={item.imageUrl}
-          alt={item.name}
-          fill
-          style={{ objectFit: "cover" }}
-        />
-      </Box>
+      <CardMedia
+        component="img"
+        sx={{ width: "8vw", height: "8vw", objectFit: "cover", borderRadius: "8px" }}
+        image={item.imageUrl}
+        alt={item.name}
+      />
       <Box sx={{
           display: "flex",
           flexDirection: "column",
@@ -52,7 +42,13 @@ export const MenuItemCard = ({ item }: Props) => {
         <Typography variant="subtitle1" fontWeight="bold">
           {item.name}
         </Typography>
-        <Typography variant="body2" color="text.primary">
+        <Typography variant="caption" color="text.primary" sx={{
+          display: "-webkit-box",
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}>
           {item.description}
         </Typography>
         <Box
@@ -63,7 +59,7 @@ export const MenuItemCard = ({ item }: Props) => {
             mt: 1,
           }}
         >
-          <Typography fontWeight="bold">${item.price.toLocaleString()}</Typography>
+          <Typography variant="subtitle1" fontWeight="bold">${item.price.toLocaleString()}</Typography>
           <Button
             variant="contained"
             sx={{
@@ -73,11 +69,12 @@ export const MenuItemCard = ({ item }: Props) => {
               textTransform: "none",
               "&:hover": {
                 backgroundColor: "#333",
-              }
+              },
+              p: 1
             }}
-            onClick={() => addToCart(item)}
+            onClick={(e) => { e.stopPropagation(); addToCart(item);}}
           >
-            Agregar al carrito
+            Agregar
           </Button>
         </Box>
       </Box>
