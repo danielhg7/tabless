@@ -59,7 +59,7 @@ export default function MenuPage() {
       <>
         <Grid container spacing={2}>
           {menu.map((item) => (
-            <Grid size={{ xs: 12,sm: 6, md: 4 }} key={item.id}>
+            <Grid size={{ xs: 12,sm: 8, md: 6 }} key={item.id}>
               <MenuItemCard item={item} />
             </Grid>
           ))}
