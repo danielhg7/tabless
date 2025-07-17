@@ -1,50 +1,143 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { Box, Typography, List, ListItem, ListItemText, Divider, Button } from "@mui/material";
+import { Box, Typography, List, ListItem, ListItemText, Divider, Button, TextField, IconButton, Container, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
+import { useState } from "react";
+import { CartItem } from "@/interfaces/CartItem";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useRouter } from 'next/navigation';
+
 
 export default function PedidoPage() {
-  const { cart, removeFromCart, clearCart } = useCart();
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<string | null>(null);
+  const { cart, removeFromCart, handleDecrease, handleIncrease } = useCart();
+  const router = useRouter();
+
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
+  const onDecrease = (item: CartItem) => {
+    if(item.quantity > 1) {
+      handleDecrease(item.id)
+    } else {
+      setProductToDelete(item.id);
+      setOpenConfirmModal(true);
+    }
+  };
+
+  const onIncrease = (id: string) => {
+    handleIncrease(id)
+  }
+
+  const handleRemove = (id: string) => {
+    setProductToDelete(id);
+    setOpenConfirmModal(true);
+  }
+
+  const confirmRemove = () => {
+    removeFromCart(String(productToDelete))
+    setOpenConfirmModal(false);
+    setProductToDelete(null);
+  }
+
+  const handleCheckout = () => {
+    router.push('/checkout');
+  };
+  
   return (
-    <Box p={4}>
-      <Typography variant="h4" gutterBottom>
-        Tu Pedido
-      </Typography>
+    <Container maxWidth={false} sx={{ py: 4, maxWidth: "1600px" }}>
+      <Dialog
+        open={openConfirmModal}
+        onClose={() => setOpenConfirmModal(false)}
+      >
+        <DialogTitle>Remove product?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmModal(false)}>Cancel</Button>
+          <Button onClick={confirmRemove} color="error" variant="contained">
+            Remove
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Box p={4}>
+        <Box display="flex" alignItems="center" mb={2}>
+        <Button
+          variant="outlined"
+          color="primary"
+          startIcon={<ArrowBackIcon />}
+          onClick={() => router.back()}
+          sx={{ mb: 2 }}
+        >
+          Back
+        </Button>
+      </Box>
+        <Typography variant="h4" gutterBottom>
+          Your Order
+        </Typography>
 
-      {cart.length === 0 ? (
-        <Typography variant="body1">Tu carrito está vacío.</Typography>
-      ) : (
-        <>
-          <List>
-            {cart.map((item) => (
-              <ListItem key={item.id} secondaryAction={
-                <Button color="error" onClick={() => removeFromCart(item.id)}>
-                  Quitar
-                </Button>
-              }>
-                <ListItemText
-                  primary={`${item.name} x${item.quantity}`}
-                  secondary={`$${item.price * item.quantity}`}
-                />
-              </ListItem>
-            ))}
-          </List>
-          <Divider sx={{ my: 2 }} />
-          <Typography variant="h6">Total: ${total}</Typography>
+        {cart.length === 0 ? (
+          <Typography variant="body1">Your cart is empty.</Typography>
+        ) : (
+          <>
+            <List>
+              {cart.map((item) => (
+                <ListItem key={item.id} secondaryAction={
+                  <>
+                    <IconButton onClick={() => onDecrease(item)} size="small">
+                      <RemoveIcon />
+                    </IconButton>
+                    <TextField
+                      value={item.quantity}
+                      size="small"
+                      variant="outlined"
+                      slotProps={{ htmlInput: { min: 1, style: { textAlign: 'center', width: '4vh' }} }}
+                    />
+                    <IconButton onClick={() => onIncrease(item.id)} size="small">
+                      <AddIcon />
+                    </IconButton>
+                    <Button color="error" onClick={() => handleRemove(item.id)}>
+                      <DeleteIcon sx={{ color: "#2C3E50" }} />
+                    </Button>
+                  </>
+                }>
+                  <ListItemText
+                    primary={`${item.name} x${item.quantity}`}
+                    secondary={`$${item.price * item.quantity}`}
+                  />
+                </ListItem>
+              ))}
+            </List>
+            <Divider sx={{ my: 2 }} />
+            <Typography variant="h6">Total: ${total}</Typography>
 
-          <Box mt={3}>
-            <Button variant="contained" color="primary" fullWidth>
-              Ir a pagar
-            </Button>
-            <Button onClick={clearCart} fullWidth sx={{ mt: 1 }}>
-              Vaciar carrito
-            </Button>
-          </Box>
-        </>
-      )}
-    </Box>
+            <Box mt={3}>
+              <Button variant="contained" color="primary"
+              sx={{
+                left: '50%',
+                transform: 'translateX(-50%)',
+                bgcolor: '#2C3E50',
+                px: 8,
+                borderRadius: '10px',
+                "&:hover": {
+                  bgcolor: "#3b5670",
+                }
+              }}
+              onClick={() => handleCheckout()}>
+                Checkout
+              </Button>
+            </Box>
+          </>
+
+        )}
+      </Box>
+    </Container>
   );
 }

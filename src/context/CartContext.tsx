@@ -2,16 +2,15 @@
 
 import { createContext, useContext, useState, ReactNode } from "react";
 import { MenuItem } from "@/interfaces/MenuItem";
-
-export interface CartItem extends MenuItem {
-  quantity: number;
-}
+import { CartItem } from "@/interfaces/CartItem";
 
 interface CartContextType {
   cart: CartItem[];
   addToCart: (item: MenuItem) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
+  handleDecrease: (id: string) => void;
+  handleIncrease: (id: string) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -37,12 +36,33 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
+
+  const handleDecrease = (id: string) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item.id === id && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+    );
+  };
+
+  const handleIncrease = (id: string) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item.id === id && item.quantity >= 0
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
+
   const clearCart = () => {
     setCart([]);
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, handleDecrease, handleIncrease }}>
       {children}
     </CartContext.Provider>
   );

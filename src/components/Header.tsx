@@ -30,7 +30,6 @@ export const Header = () => {
           </Box>
         </Link>
 
-        {/* Espaciador */}
         <Box sx={{ flexGrow: 1 }} />
 
         <Link href="/order" passHref>
@@ -39,7 +38,7 @@ export const Header = () => {
               bgcolor: "#2C3E50",
               color: "white",
               "&:hover": {
-                bgcolor: "#0aa097", // un tono más oscuro al hacer hover
+                bgcolor: "#3b5670"
               },
             }}
           >

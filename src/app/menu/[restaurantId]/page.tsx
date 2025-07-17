@@ -2,14 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Typography, Grid, CircularProgress, Container } from "@mui/material";
+import { Typography, Grid, CircularProgress, Container, Button } from "@mui/material";
 import { MenuItemCard } from "@/components/MenuItemCard";
 import { MenuItem } from "@/interfaces/MenuItem";
+import { useRouter } from 'next/navigation';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useCart } from "@/context/CartContext";
 
 export default function MenuPage() {
   const { restaurantId } = useParams();
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const { cart } = useCart();
+  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
 
   useEffect(() => {
@@ -84,6 +90,31 @@ export default function MenuPage() {
           </Fab>
         </Link> */}
       </>
+      {totalItems > 0 && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => router.push('/order')}
+          sx={{
+            position: 'fixed',
+            bottom: 20,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 1300,
+            borderRadius: '10px',
+            boxShadow: 3,
+            px: 3,
+            py: 1,
+            bgcolor: '#2C3E50',
+            "&:hover": {
+              bgcolor: "#3b5670",
+            }
+          }}
+        >
+            <ShoppingCartIcon />
+            Ver carrito ({totalItems})
+        </Button>
+      )}
     </Container>
   );
 }
