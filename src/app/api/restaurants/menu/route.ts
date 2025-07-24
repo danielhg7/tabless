@@ -6,7 +6,7 @@ import { Subcategory } from "@/interfaces/Subcategory";
 import { MenuItem } from "@/interfaces/MenuItem";
 import { MenuResponse } from "@/interfaces/MenuResponse";
 import { MenuItemModel } from "@/models/MenuItem";
-import { menu } from "@/data/menu";
+//import { menu } from "@/data/menu";
 
 export async function GET(req: NextRequest) {
   try {
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    return NextResponse.json(menu);
+    //return NextResponse.json(menu);
 
     await connectToDB();
 
@@ -102,7 +102,7 @@ const transformData = (data: MenuResponse) => {
       ...(transformedSubcategories.length > 0 && { subcategories: transformedSubcategories })
     };
 
-    //return result;
+    return result;
   });
 
   return {

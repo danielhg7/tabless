@@ -12,9 +12,8 @@ import { CategoryDocument } from "@/models/Category";
 import { Restaurant } from "@/interfaces/Restaurant";
 import { Subcategory } from "@/interfaces/Subcategory";
 import { Tabs, Tab, Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
-const CustomTab = styled(Tab)(({ theme }) => ({
+/* const CustomTab = styled(Tab)(({ theme }) => ({
   borderRadius: 5,
   marginRight: 10,
   textTransform: 'none',
@@ -25,7 +24,7 @@ const CustomTab = styled(Tab)(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
   },
-}));
+})); */
 
 export default function MenuPage() {
   const { restaurantId } = useParams();
@@ -119,7 +118,7 @@ export default function MenuPage() {
             {subcategories.map((subcategory) => (
               <Box sx={{ xs: 12, sm: 6, md: 4, my: 2 }} key={subcategory.id}>
                 
-                {subcategory?.items?.length > 0 && 
+                {selectedCategory && subcategory?.items?.length > 0 && 
                 
                 <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold" }}>
                   {subcategory.name}
