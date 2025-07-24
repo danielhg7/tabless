@@ -11,7 +11,7 @@ export const Header = () => {
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <AppBar position="sticky" sx={{ bgcolor: "#2C3E50" }}>
+    <AppBar position="sticky" sx={{ bgcolor: '#2C3E50' }}>
       <Toolbar>
         {/* Logo y nombre de la app */}
         <Link href="/" passHref>

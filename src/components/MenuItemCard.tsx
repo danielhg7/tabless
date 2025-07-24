@@ -19,17 +19,18 @@ export const MenuItemCard = ({ item }: Props) => {
       padding: 1.5,
       boxShadow: "none",
       width: "100%",
+      minWidth: 376,
       margin: "0 auto",
       cursor: "pointer"
     }} onClick={() => {
       console.log("Item clickeado");
     }}>
-      <CardMedia
+      {item.imageUrl && <CardMedia
         component="img"
         sx={{ width: "8vw", height: "8vw", objectFit: "cover", borderRadius: "8px" }}
         image={item.imageUrl}
         alt={item.name}
-      />
+      />}
       <Box sx={{
           display: "flex",
           flexDirection: "column",
@@ -66,8 +67,9 @@ export const MenuItemCard = ({ item }: Props) => {
               color: "#fff",
               fontWeight: "bold",
               textTransform: "none",
-              "&:hover": {
-                backgroundColor: "#333",
+              bgColor: '#2C3E50',
+              '&:hover': {
+                bgcolor: "#3b5670"
               },
               p: 1
             }}

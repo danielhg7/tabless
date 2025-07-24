@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDB } from "@/lib/mongoose";
 import { Restaurant } from "@/models/Restaurant";
-import { MenuItem } from "@/models/MenuItem";
+import { Category, CategoryDocument } from "@/models/Category";
+import { Subcategory } from "@/interfaces/Subcategory";
+import { MenuItem } from "@/interfaces/MenuItem";
+import { MenuResponse } from "@/interfaces/MenuResponse";
+import { MenuItemModel } from "@/models/MenuItem";
+import { menu } from "@/data/menu";
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const slug = searchParams.get("slug");
-
-    console.log(slug);
+    const slug = searchParams.get('slug');
 
     if (!slug) {
       return NextResponse.json(
@@ -16,6 +19,8 @@ export async function GET(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    return NextResponse.json(menu);
 
     await connectToDB();
 
@@ -25,30 +30,83 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Restaurant no encontrado" }, { status: 404 });
     }
 
-    const menuItems = await MenuItem.find({
-      restaurantId: restaurant._id,
-    });
+    console.log("Restaurant: ", restaurant)
 
-    if (!menuItems) {
+    const categories = await Category.find({
+      restaurantId: restaurant._id,
+      isActive: true
+    })
+
+    if (!categories) {
+      return NextResponse.json(
+        { error: "Categories were not found" },
+        { status: 404 }
+      );
+    }
+
+    console.log("Categories: ", categories)
+
+    const itemsByCategories: MenuItem[] = (
+      await Promise.all(
+        categories.map(async (category) =>
+          MenuItemModel.find({ categoryId: category._id })
+        )
+      )
+    ).flat()
+
+    const response = {
+      restaurant,
+      categories,
+      items: itemsByCategories
+    }
+
+
+    console.log("Items: ", itemsByCategories)
+
+
+    if (itemsByCategories.length === 0) {
       return NextResponse.json(
         { error: "Menú no encontrado para el restaurantId proporcionado" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({
-      menu: menuItems.map( each => {
-        return {
-          id: String(each._id),
-          name: each.name,
-          description: each.description,
-          price: each.price,
-          imageUrl: each.imageUrl
-        }
-      }),
-    });
+    console.log("RESPONSE: ", transformData(response))
+    return NextResponse.json(transformData(response));
+
   } catch(error) {
     console.error("Error en GET /api/restaurant/menu", JSON.stringify(error));
     return NextResponse.json({ error: JSON.stringify(error) }, { status: 500 });
   }
+}
+
+const transformData = (data: MenuResponse) => {
+  const { restaurant, categories, items } = data;
+
+  const transformedCategories = categories.map((category: CategoryDocument) => {
+    const transformedSubcategories = category.subcategories.map((sub: Subcategory) => {
+      const itemsForSub = items
+        .filter((item: MenuItem) => item.subcategoryId === sub.id)
+        .map(({ name, description, price, imageUrl  }) => ({ name, description, price, imageUrl }));
+
+      return {
+        id: sub.id,
+        name: sub.name,
+        ...(itemsForSub.length > 0 && { items: itemsForSub })
+      };
+    });
+
+    const result = {
+      name: category.name,
+      ...(category.id && { id: category.id }),
+      ...(transformedSubcategories.length > 0 && { subcategories: transformedSubcategories })
+    };
+
+    //return result;
+  });
+
+  return {
+    restaurant,
+    categories: transformedCategories
+  };
 }
