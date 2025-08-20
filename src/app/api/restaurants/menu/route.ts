@@ -3,10 +3,10 @@ import { connectToDB } from "@/lib/mongoose";
 import { Restaurant } from "@/models/Restaurant";
 import { Category, CategoryDocument } from "@/models/Category";
 import { Subcategory } from "@/interfaces/Subcategory";
-import { MenuItem } from "@/interfaces/MenuItem";
+import { Item } from "@/interfaces/Item";
 import { MenuResponse } from "@/interfaces/MenuResponse";
 import { MenuItemModel } from "@/models/MenuItem";
-// import { menu } from "@/data/menu";
+import { menu } from "@/data/menu";
 
 export async function GET(req: NextRequest) {
   try {
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // return NextResponse.json(menu);
+    //return NextResponse.json(menu);
 
     await connectToDB();
 
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
 
     console.log("Categories: ", categories)
 
-    const itemsByCategories: MenuItem[] = (
+    const itemsByCategories: Item[] = (
       await Promise.all(
         categories.map(async (category) =>
           MenuItemModel.find({ categoryId: category._id })
@@ -86,7 +86,7 @@ const transformData = (data: MenuResponse) => {
   const transformedCategories = categories.map((category: CategoryDocument) => {
     const transformedSubcategories = category.subcategories.map((sub: Subcategory) => {
       const itemsForSub = items
-        .filter((item: MenuItem) => item.subcategoryId === sub.id)
+        .filter((item: Item) => item.subcategoryId === sub.id)
         .map(({ name, description, price, imageUrl  }) => ({ name, description, price, imageUrl }));
 
       return {

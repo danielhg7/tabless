@@ -1,6 +1,6 @@
 import { CategoryDocument } from "@/models/Category";
 import { Restaurant } from "./Restaurant";
-import { MenuItem } from "./MenuItem";
+import { MenuItem } from "./Item";
 
 export interface MenuResponse {
     restaurant: Restaurant;

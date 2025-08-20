@@ -1,12 +1,12 @@
 import { Card, Typography, Button, Box, CardMedia } from "@mui/material";
-import { MenuItem } from "@/interfaces/MenuItem";
+import { Item } from "@/interfaces/Item";
 import { useCart } from "@/context/CartContext";
 
 interface Props {
-  item: MenuItem;
+  item: Item;
 }
 
-export const MenuItemCard = ({ item }: Props) => {
+export const ItemCard = ({ item }: Props) => {
   const { addToCart } = useCart();
 
   return (
@@ -73,7 +73,7 @@ export const MenuItemCard = ({ item }: Props) => {
               },
               p: 1
             }}
-            onClick={(e) => { e.stopPropagation(); addToCart(item);}}
+            onClick={(e) => { e.stopPropagation(); console.log(item.id); addToCart(item);}}
           >
             Agregar
           </Button>

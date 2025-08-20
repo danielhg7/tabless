@@ -1,6 +1,6 @@
-import { MenuItem } from "./MenuItem";
+import { Item } from "./Item";
 
-export interface CartItem extends MenuItem {
+export interface CartItem extends Item {
   quantity: number;
 }
   

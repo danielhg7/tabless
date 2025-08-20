@@ -3,37 +3,24 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { Typography, Grid, CircularProgress, Container, Button } from "@mui/material";
-import { MenuItemCard } from "@/components/MenuItemCard";
-import { MenuItem } from "@/interfaces/MenuItem";
+import { ItemCard } from "@/components/MenuItemCard";
+import { Item } from "@/interfaces/Item";
 import { useRouter } from 'next/navigation';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useCart } from "@/context/CartContext";
 import { CategoryDocument } from "@/models/Category";
-import { Restaurant } from "@/interfaces/Restaurant";
 import { Subcategory } from "@/interfaces/Subcategory";
 import { Tabs, Tab, Box } from '@mui/material';
 import React from "react";
-
-/* const CustomTab = styled(Tab)(({ theme }) => ({
-  borderRadius: 5,
-  marginRight: 10,
-  textTransform: 'none',
-  border: `1px solid ${theme.palette.divider}`,
-  minWidth: 'auto',
-  padding: '6px 16px',
-  '&.Mui-selected': {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-  },
-})); */
+import { useRestaurant } from "@/context/RestaurantContext";
 
 export default function MenuPage() {
   const { restaurantId } = useParams();
-  const [restaurant, setRestaurant] = useState<Restaurant|null>(null);
+  const {setRestaurant} = useRestaurant();
   const [categories, setCategories] = useState<CategoryDocument[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryDocument|null>(null);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
-  const [menu, setMenu] = useState<MenuItem[]>([]);
+  const [menu, setMenu] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -71,7 +58,7 @@ export default function MenuPage() {
     }
 
     fetchMenu();
-  }, [restaurantId]);
+  }, [restaurantId, setRestaurant]);
 
   if (loading) {
     return (
@@ -96,17 +83,35 @@ export default function MenuPage() {
     }
   };
 
+/*   const handleCategoryChange = (event: SelectChangeEvent<string>) => {
+    const selectedId = event.target.value;
+    const category = categories.find((c) => c.id === selectedId);
+    if (category) {
+      setSelectedCategory(category);
+    }
+  } */
+
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setSelectedTab(newValue);
+    setSelectedTab(newValue)
   };
 
   return (
     <>
-        <Container maxWidth={false} sx={{ py: 4, maxWidth: "1600px" }}>
-          <Typography variant="h4" gutterBottom>
-            {restaurant?.name}
-          </Typography>
-          <Grid container spacing={2}>
+        <Container maxWidth={false} sx={{ py: 8, maxWidth: "1600px" }}>
+          {/*<Select
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            size="small"
+            sx={{ minWidth: 150, ml: 2 }}
+            renderValue={(selected) => selected?.name || ''}
+          >
+            {categories.map((category) => (
+              <MenuItem key={category.id} value={category.id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </Select>*/}
+          <Grid container spacing={2} >
             <Box sx={{ borderColor: 'divider' }}>
               <Tabs
                 value={selectedTab}
@@ -144,7 +149,7 @@ export default function MenuPage() {
                   <Grid container spacing={2}>
                     {subcategory?.items?.map((item) => (
                       <Grid size={{ xs: 12,sm: 6, md: 3 }} key={item.id}>
-                        <MenuItemCard item={item} />
+                        <ItemCard item={item} />
                       </Grid>
                     ))}
                   </Grid>

@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
-import { Header } from "@/components/Header";
+import { RestaurantProvider } from "@/context/RestaurantContext";
+import RestaurantHeader from "@/components/RestaurantHeader";
+import Footer from "@/components/Footer";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,10 +30,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <CartProvider>
-          <Header />
-          {children}
-        </CartProvider>
+        <RestaurantProvider>
+          <CartProvider>
+            <RestaurantHeader 
+              backgroundUrl={"https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697401244IMG_5404.webp"} 
+              logoUrl={"https://gour.media/wp-content/uploads/2024/02/roatan-4.png"} />
+              {children}
+            <Footer />
+          </CartProvider>
+        </RestaurantProvider>
       </body>
     </html>
   );

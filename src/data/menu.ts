@@ -17,62 +17,62 @@ export const menu = {
       "id": "687972378210b4530f5bcbf0",
       "subcategories": [
         {
-          "id": "687a48ed574d91889cfb7d11",
-          "name": "Promos Roatán",
-          "items": [
+          id: '687a48ed574d91889cfb7d11',
+          name: 'Promos Roatán',
+          items: [
             {
-              "name": "2 Copas Ramazzotti Spritz",
-              "price": 10900,
-              "description": "Todos los días. Providencia hasta las 19:30 hrs. Vitacura hasta las 20:00 hrs."
+              id: '68836e334a964cfffcc90fc6',
+              name: '2 Copas Ramazzotti Spritz',
+              price: 10900,
+              description: 'Todos los días. Providencia hasta las 19:30 hrs. Vitacura hasta las 20:00 hrs.'
             }
           ]
         },
         {
-          "id": "687a48b9574d91889cfb7d0a",
-          "name": "Cocteleria de Autor",
-          "items": [
+          id: '687a48b9574d91889cfb7d0a',
+          name: 'Cocteleria de Autor',
+          items: [
             {
-              "name": "Sexy Wild",
-              "price": 9900,
-              "imageUrl": "https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697421834IMG_5458.webp",
-              "description": "Pisco Mistral 35º, syrup de vino tinto, jugo de maracuyá, piña y limón."
+              id: '686e5992f7509fb83a04bb9f',
+              name: 'Sexy Wild',
+              price: 9900,
+              imageUrl: 'https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697421834IMG_5458.webp',
+              description: 'Pisco Mistral 35º, syrup de vino tinto, jugo de maracuyá, piña y limón.'
             },
             {
-              "name": "Tropical Jack",
-              "price": 9500,
-              "imageUrl": "https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697421869IMG_5457.webp",
-              "description": "Whisky Jack Daniel's, jugo de naranja, pula de maracuyá con pepas, zumo de limón, syrup de la casa y menta."
+              id: '686e5a35f7509fb83a04bba0',
+              name: 'Tropical Jack',
+              price: 9500,
+              imageUrl: "https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697421869IMG_5457.webp",
+              description: "Whisky Jack Daniel's, jugo de naranja, pula de maracuyá con pepas, zumo de limón, syrup de la casa y menta."
             },
             {
-              "name": "Malmok",
-              "price": 9900,
-              "imageUrl": "https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697456713IMG_5463.webp",
-              "description": "Vodka Absolut, St. Germain, slices de pepino, syrup simple y agua tónica."
+              id: '6877b39ffb9a0bd0ed6516b0',
+              name: 'Malmok',
+              price: 9900,
+              imageUrl: 'https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697456713IMG_5463.webp',
+              description: 'Vodka Absolut, St. Germain, slices de pepino, syrup simple y agua tónica.'
             },
             {
-              "name": "Maho Beach",
-              "price": 9900,
-              "imageUrl": "https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697456682IMG_5462.webp",
-              "description": "Gin Bombay Sapphire, zumo de limón, dash de maracuyá, slices de pepino, syrup simple y Redbull Yellow."
+              id: '6877b5c9fb9a0bd0ed6516b1',
+              name: 'Maho Beach',
+              price: 9900,
+              imageUrl: 'https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697456682IMG_5462.webp',
+              description: 'Gin Bombay Sapphire, zumo de limón, dash de maracuyá, slices de pepino, syrup simple y Redbull Yellow.'
             }
           ]
         },
         {
-          "id": "687a48c9574d91889cfb7d0d",
-          "name": "Cocteleria Roatán",
-          "items": [
+          id: '687a48c9574d91889cfb7d0d',
+          name: 'Cocteleria Roatán',
+          items: [
             {
-              "name": "Paloma",
-              "price": 10650,
-              "imageUrl": "https://gourmedia-content.b-cdn.net/wp-content/uploads/2024/09/309888_1726258570.webp",
-              "description": "Paloma es un coctel clásica mexicano elaborada con tequila. Ingredientes: Tequila Patrón Silver, Zumo de Pomelo, Zumo de Limón, syrup y tónica, enllantado con tajín (sazonador en polvo con una mezcla de chiles deshidratados, limón y sal de mar). Muy refrescante."
-            },
-            {
-              "name": "Cofre de la Muerte",
-              "price": 9900,
-              "imageUrl": "https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697456499IMG_5460.webp",
-              "description": "Ron bacardi añejo, campari, jugo de piña, syrup, zumo de limón y reducción infusionada de Flor de Jamaica."
-            },
+              id: '686e4aebf7509fb83a04bb9a',
+              name: 'Paloma',
+              price: 10650,
+              imageUrl: 'https://gourmedia-content.b-cdn.net/wp-content/uploads/2024/09/309888_1726258570.webp',
+              description: 'Paloma es un coctel clásica mexicano elaborada con tequila. Ingredientes: Tequila Patrón Silver, Zumo de Pomelo, Zumo de Limón, syrup y tónica, enllantado con tajín (sazonador en polvo con una mezcla de chiles deshidratados, limón y sal de mar). Muy refrescante.'
+            }
           ]
         },
         {
