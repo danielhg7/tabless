@@ -8,8 +8,8 @@ export const menu = {
     "isActive": false,
     "city": "Santiago",
     "country": "Chile",
-    "logo": "",
-    "backgroundImage": ""
+    "logo": "https://gour.media/wp-content/uploads/2024/02/roatan-4.png",
+    "backgroundImage": "https://gourmedia-content.b-cdn.net/wp-content/uploads/2023/10/1697401244IMG_5404.webp"
   },
   "categories": [
     {
