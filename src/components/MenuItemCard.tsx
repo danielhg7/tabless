@@ -1,6 +1,6 @@
-import { Card, Typography, Button, Box, CardMedia } from "@mui/material";
 import { Item } from "@/interfaces/Item";
 import { useCart } from "@/context/CartContext";
+import { Plus } from "lucide-react";
 
 interface Props {
   item: Item;
@@ -9,76 +9,59 @@ interface Props {
 export const ItemCard = ({ item }: Props) => {
   const { addToCart } = useCart();
 
+  console.log("Item: ", item)
+
   return (
-    <Card sx={{
-      display: "flex",
-      alignItems: "center",
-      backgroundColor: "#F4D03F",
-      borderRadius: "12px",
-      border: "2px solid #2C3E50",
-      padding: 1.5,
-      boxShadow: "none",
-      width: "100%",
-      minWidth: 376,
-      margin: "0 auto",
-      cursor: "pointer"
-    }} onClick={() => {
-      console.log("Item clickeado");
-    }}>
-      {item.imageUrl && <CardMedia
-        component="img"
-        sx={{ width: "8vw", height: "8vw", objectFit: "cover", borderRadius: "8px" }}
-        image={item.imageUrl}
-        alt={item.name}
-      />}
-      <Box sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          pl: 2,
-          flexGrow: 1,
-          height: "100%",
-        }}>
-        <Typography variant="subtitle1" fontWeight="bold">
-          {item.name}
-        </Typography>
-        <Typography variant="caption" color="text.primary" sx={{
-          display: "-webkit-box",
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}>
-          {item.description}
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mt: 1,
-          }}
+    <div
+      className='flex items-center border-b border-gray-700 w-full min-w-[398px] min-h-[129px] pb-[1vw] cursor-pointer'
+      onClick={() => {
+        console.log("Item clickeado");
+      }}
+    >
+      {/* Texto del producto */}
+      <div className="flex flex-col justify-between flex-grow h-full w-3/5 pr-2">
+        <h3 className="text-base font-medium">{item.name}</h3>
+        <p
+          className="text-sm text-gray-600 overflow-hidden text-ellipsis line-clamp-2 mt-2"
         >
-          <Typography variant="subtitle1" fontWeight="bold">${item.price.toLocaleString()}</Typography>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#000",
-              color: "#fff",
-              fontWeight: "bold",
-              textTransform: "none",
-              bgColor: '#2C3E50',
-              '&:hover': {
-                bgcolor: "#3b5670"
-              },
-              p: 1
+          {item.description}
+        </p>
+        <div className="flex justify-between items-center mt-4">
+          <span className="text-base font-medium">
+            ${item.price.toLocaleString()}
+          </span>
+
+          {/* Botón agregar al carrito */}
+          {/* 
+          <button
+            className="bg-black text-white font-bold px-3 py-1 rounded hover:bg-gray-800"
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log(item.id);
+              addToCart(item);
             }}
-            onClick={(e) => { e.stopPropagation(); console.log(item.id); addToCart(item);}}
           >
-            Agregar
-          </Button>
-        </Box>
-      </Box>
-    </Card>
+            +
+          </button> 
+          */}
+        </div>
+      </div>
+
+      {/* Imagen del producto */}
+      {item.imageUrl && (
+        <div className="flex flex-col justify-between flex-grow h-full items-end">
+          <img
+            src={item.imageUrl}
+            alt={item.name}
+            className="w-[26vw] h-[26vw] object-cover rounded-lg brightness-120"
+          />
+
+          {/* Botón flotante */}
+          <button id={item._id} className="absolute bg-black text-white rounded-full p-2 shadow-lg transition m-1">
+            <Plus size={20} />
+          </button>
+        </div>
+      )}
+    </div>
   );
 };

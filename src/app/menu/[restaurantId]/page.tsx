@@ -142,13 +142,13 @@ export default function MenuPage() {
                   
                   {selectedCategory && subcategory?.items?.length > 0 && 
                   
-                  <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold" }}>
+                  <Typography variant="h5" sx={{ mb: 2, fontWeight: "500" }}>
                     {subcategory.name}
                   </Typography>}
 
                   <Grid container spacing={2}>
                     {subcategory?.items?.map((item) => (
-                      <Grid size={{ xs: 12,sm: 6, md: 3 }} key={item.id}>
+                      <Grid size={{ xs: 12,sm: 6, md: 3 }} key={item._id}>
                         <ItemCard item={item} />
                       </Grid>
                     ))}
