@@ -6,7 +6,7 @@ import { Subcategory } from "@/interfaces/Subcategory";
 import { Item } from "@/interfaces/Item";
 import { MenuResponse } from "@/interfaces/MenuResponse";
 import { MenuItemModel } from "@/models/MenuItem";
-import { menu } from "@/data/menu";
+//import { menu } from "@/data/menu";
 
 export async function GET(req: NextRequest) {
   try {

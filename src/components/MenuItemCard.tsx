@@ -1,5 +1,5 @@
 import { Item } from "@/interfaces/Item";
-import { useCart } from "@/context/CartContext";
+//import { useCart } from "@/context/CartContext";
 import { Plus } from "lucide-react";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const ItemCard = ({ item }: Props) => {
-  const { addToCart } = useCart();
+  //const { addToCart } = useCart();
 
   console.log("Item: ", item)
 
