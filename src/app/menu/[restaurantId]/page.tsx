@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Typography, Grid, CircularProgress, Container, Button } from "@mui/material";
+import { Typography, Grid, CircularProgress, Container } from "@mui/material";
 import { ItemCard } from "@/components/MenuItemCard";
 import { Item } from "@/interfaces/Item";
-import { useRouter } from 'next/navigation';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { useCart } from "@/context/CartContext";
+// import { useRouter } from 'next/navigation';
+// import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+// import { useCart } from "@/context/CartContext";
 import { CategoryDocument } from "@/models/Category";
 import { Subcategory } from "@/interfaces/Subcategory";
 import { Tabs, Tab, Box } from '@mui/material';
@@ -24,11 +24,11 @@ export default function MenuPage() {
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState(0);
 
-  const router = useRouter();
-  const { cart } = useCart();
+  // const router = useRouter();
+  // const { cart } = useCart();
   const sectionRefs = useRef<Record<string, React.RefObject<HTMLDivElement | null>>>({});
 
-  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+  // const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
 
   useEffect(() => {
