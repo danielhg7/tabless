@@ -2,17 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Typography, Grid, CircularProgress, Container } from "@mui/material";
+import { Typography, Grid, CircularProgress, Container, Button } from "@mui/material";
 import { ItemCard } from "@/components/MenuItemCard";
 import { Item } from "@/interfaces/Item";
 // import { useRouter } from 'next/navigation';
 // import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-// import { useCart } from "@/context/CartContext";
+import { useCart } from "@/context/CartContext";
 import { CategoryDocument } from "@/models/Category";
 import { Subcategory } from "@/interfaces/Subcategory";
 import { Tabs, Tab, Box } from '@mui/material';
 import React from "react";
 import { useRestaurant } from "@/context/RestaurantContext";
+import { ShoppingCartIcon } from "lucide-react";
 
 export default function MenuPage() {
   const { restaurantId } = useParams();
@@ -25,10 +26,10 @@ export default function MenuPage() {
   const [selectedTab, setSelectedTab] = useState(0);
 
   // const router = useRouter();
-  // const { cart } = useCart();
+  const { cart } = useCart();
   const sectionRefs = useRef<Record<string, React.RefObject<HTMLDivElement | null>>>({});
 
-  // const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
 
   useEffect(() => {
@@ -161,28 +162,28 @@ export default function MenuPage() {
 
 
 
-          {/*totalItems > 0 && (
+          {totalItems > 0 && (
             <Button
-              variant="contained"
-              color="primary"
-              onClick={() => router.push('/order')}
+              onClick={() => console.log("Cart is ready")}
               sx={{
+                position: 'fixed',
                 bottom: 20,
                 left: '50%',
-                transform: 'translateX(-50%)',
-                zIndex: 1300,
+                transform: 'translateY(-52px) translateX(-80px)',
                 borderRadius: '10px',
                 boxShadow: 3,
-                bgcolor: '#2C3E50',
+                bgcolor: '#000000',
                 "&:hover": {
                   bgcolor: "#3b5670",
-                }
+                },
+                px: 2,
+                color: 'white'
               }}
             >
-                <ShoppingCartIcon />
-                Ver carrito ({totalItems})
+                <ShoppingCartIcon className='shoppingCartIcon' />
+                Ver pedido ({totalItems})
             </Button>
-          )*/}
+          )}
         </Container>
     </>
   );

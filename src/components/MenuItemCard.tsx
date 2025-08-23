@@ -1,5 +1,5 @@
 import { Item } from "@/interfaces/Item";
-//import { useCart } from "@/context/CartContext";
+import { useCart } from "@/context/CartContext";
 import { Plus } from "lucide-react";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const ItemCard = ({ item }: Props) => {
-  //const { addToCart } = useCart();
+  const { addToCart } = useCart();
 
   console.log("Item: ", item)
 
@@ -57,7 +57,13 @@ export const ItemCard = ({ item }: Props) => {
           />
 
           {/* Botón flotante */}
-          <button id={item._id} className="absolute bg-black text-white rounded-full p-2 shadow-lg transition m-1">
+          <button id={item._id} 
+          className="absolute bg-black text-white rounded-full p-2 shadow-lg transition m-1"
+          onClick={(e) => {
+            e.stopPropagation();
+            console.log(item.id);
+            addToCart(item);
+          }}>
             <Plus size={20} />
           </button>
         </div>
