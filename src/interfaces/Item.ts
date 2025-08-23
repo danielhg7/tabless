@@ -5,5 +5,6 @@ export interface Item {
     name: string;
     description: string;
     price: number;
-    subcategoryId: string
+    subcategoryId: string;
+    count: number
 }

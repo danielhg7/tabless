@@ -9,8 +9,6 @@ interface Props {
 export const ItemCard = ({ item }: Props) => {
   const { addToCart } = useCart();
 
-  console.log("Item: ", item)
-
   return (
     <div
       className='flex items-center border-b border-gray-700 w-full min-h-[129px] pb-[1vw] cursor-pointer'
@@ -58,13 +56,14 @@ export const ItemCard = ({ item }: Props) => {
 
           {/* Botón flotante */}
           <button id={item._id} 
-          className="absolute bg-black text-white rounded-full p-2 shadow-lg transition m-1"
+          className="absolute bg-black text-white rounded-full p-2 shadow-lg transition m-1 w-[36px]"
           onClick={(e) => {
             e.stopPropagation();
             console.log(item.id);
             addToCart(item);
           }}>
-            <Plus size={20} />
+            {item.count === 0 && <Plus size={20} />}
+            {item.count > 0 && item.count}
           </button>
         </div>
       )}

@@ -6,7 +6,7 @@ import { CartItem } from "@/interfaces/CartItem";
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (item: Item) => void;
+  addToCart: (item: Item | null) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
   handleDecrease: (id: string) => void;
@@ -18,18 +18,19 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = (item: Item) => {
-    setCart((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-        );
-      } else {
-        return [...prev, { ...item, quantity: 1 }];
-      }
-    });
-    console.log(JSON.stringify(cart));
+  const addToCart = (item: Item | null) => {
+    if(item) {
+      setCart((prev) => {
+        const existing = prev.find((i) => i.id === item.id);
+        if (existing) {
+          return prev.map((i) =>
+            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          );
+        } else {
+          return [...prev, { ...item, quantity: 1 }];
+        }
+      });
+    }
   };
 
   const removeFromCart = (id: string) => {

@@ -87,7 +87,7 @@ const transformData = (data: MenuResponse) => {
     const transformedSubcategories = category.subcategories.map((sub: Subcategory) => {
       const itemsForSub = items
         .filter((item: Item) => item.subcategoryId === sub.id)
-        .map(({ _id, name, description, price, imageUrl  }) => ({ _id, name, description, price, imageUrl }));
+        .map(({ _id, name, description, price, imageUrl, count=0  }) => ({ _id, name, description, price, imageUrl, count }));
 
       return {
         id: sub.id,
