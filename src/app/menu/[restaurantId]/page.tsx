@@ -185,7 +185,7 @@ export default function MenuPage() {
                 <img
                   src={selectedItem?.imageUrl}
                   alt={selectedItem?.name}
-                  className="w-full h-100 object-cover rounded-lg"
+                  className="w-full h-[40vh] object-cover rounded-lg b-0"
                 />
               </div>
               <SheetHeader>
@@ -194,7 +194,7 @@ export default function MenuPage() {
                   {selectedItem?.description}
                 </SheetDescription>
               </SheetHeader>
-              <div className="m-4">
+              <div className="fixed bottom-0 p-4 w-full">
                 <p className="mt-2 font-bold text-lg">${selectedItem?.price}</p>
                 <button className="mt-4 w-full bg-black text-white py-2 rounded-xl" 
                 onClick={(e) => {
