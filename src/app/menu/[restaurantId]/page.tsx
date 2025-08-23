@@ -97,7 +97,7 @@ export default function MenuPage() {
 
   return (
     <>
-        <Container maxWidth={false} sx={{ py: 8, maxWidth: "1600px" }}>
+        <Container sx={{ py: 6, px: 3, width: '100%', maxWidth: '430px' }}>
           {/*<Select
             value={selectedCategory}
             onChange={handleCategoryChange}
@@ -111,7 +111,7 @@ export default function MenuPage() {
               </MenuItem>
             ))}
           </Select>*/}
-          <Grid container spacing={2} >
+          <Grid container spacing={2}>
             <Box sx={{ borderColor: 'divider' }}>
               <Tabs
                 value={selectedTab}
@@ -161,21 +161,18 @@ export default function MenuPage() {
 
 
 
-          {totalItems > 0 && (
+          {/*totalItems > 0 && (
             <Button
               variant="contained"
               color="primary"
               onClick={() => router.push('/order')}
               sx={{
-                position: 'fixed',
                 bottom: 20,
                 left: '50%',
                 transform: 'translateX(-50%)',
                 zIndex: 1300,
                 borderRadius: '10px',
                 boxShadow: 3,
-                px: 3,
-                py: 1,
                 bgcolor: '#2C3E50',
                 "&:hover": {
                   bgcolor: "#3b5670",
@@ -185,7 +182,7 @@ export default function MenuPage() {
                 <ShoppingCartIcon />
                 Ver carrito ({totalItems})
             </Button>
-          )}
+          )*/}
         </Container>
     </>
   );

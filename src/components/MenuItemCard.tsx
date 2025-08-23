@@ -13,7 +13,7 @@ export const ItemCard = ({ item }: Props) => {
 
   return (
     <div
-      className='flex items-center border-b border-gray-700 w-full min-w-[398px] min-h-[129px] pb-[1vw] cursor-pointer'
+      className='flex items-center border-b border-gray-700 w-full min-h-[129px] pb-[1vw] cursor-pointer'
       onClick={() => {
         console.log("Item clickeado");
       }}
