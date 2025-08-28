@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react"
 import { useParams } from "next/navigation";
-import { Typography, Grid, CircularProgress, Container } from "@mui/material";
+import { Typography, Grid, CircularProgress, Container } from "@mui/material"
 import { ItemCard } from "@/components/MenuItemCard"
 import { Item } from "@/interfaces/Item"
 // import { useRouter } from 'next/navigation'
@@ -10,13 +10,12 @@ import { Item } from "@/interfaces/Item"
 import { useCart } from "@/context/CartContext"
 import { CategoryDocument } from "@/models/Category"
 import { Subcategory } from "@/interfaces/Subcategory"
-import { Tabs, Tab, Box } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material'
 import React from "react"
 import { useRestaurant } from "@/context/RestaurantContext"
 import { ShoppingCartIcon } from "lucide-react"
+import { CartItem } from "@/interfaces/CartItem"
 import { Button } from "@/components/ui/button"
-import { CartItem } from "@/interfaces/CartItem";
-
 import {
   Sheet,
   SheetContent,
@@ -24,7 +23,7 @@ import {
   SheetTitle,
   SheetDescription
 } from "@/components/ui/sheet"
-
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 
 export default function MenuPage() {
   const { restaurantId } = useParams();
@@ -131,17 +130,17 @@ export default function MenuPage() {
       return
     } else if(cartItem.count > 1) {
       handleDecrease(cartItem._id)
-    } else {
-      setProductToDelete(cartItem.id);
-      setOpenConfirmModal(true);
-    }
-    for (const subcategory of subcategories) {
-      const item = subcategory.items.find(item => item._id === cartItem._id);
-      
-      if (item) {
-        item.count = (item.count || 0) - 1;
-        return;
+      for (const subcategory of subcategories) {
+        const item = subcategory.items.find(item => item._id === cartItem._id);
+        
+        if (item) {
+          item.count = (item.count || 0) - 1;
+          return;
+        }
       }
+    } else {
+      setProductToDelete(cartItem._id);
+      setOpenConfirmModal(true);
     }
   };
 
@@ -166,6 +165,14 @@ export default function MenuPage() {
     removeFromCart(String(productToDelete))
     setOpenConfirmModal(false);
     setProductToDelete(null);
+    for (const subcategory of subcategories) {
+      const item = subcategory.items.find(item => item._id === productToDelete);
+      
+      if (item) {
+        item.count = 0;
+        return;
+      }
+    }
   }
 
   return (
@@ -262,11 +269,15 @@ export default function MenuPage() {
 
           <Sheet open={!!selectedOrder} onOpenChange={() => setSelectedOrder(false)}>
             <SheetContent side="bottom" className="h-[80vh] rounded-t-2xl">
-              <SheetHeader>
+              <SheetHeader className="p-5">
+                <SheetTitle>
+                  <h2>Confirmación de orden</h2>
+                </SheetTitle>
+                <hr className="my-3" />
                 <ul>
                   {cart.map((item) => (
                     <li
-                      key={item.id}
+                      key={item._id}
                       className="flex items-center justify-between border-b border-gray-200 py-2"
                     >
                       {/* Texto del producto */}
@@ -302,7 +313,7 @@ export default function MenuPage() {
                         </button>
 
                         <button
-                          onClick={() => handleRemove(item.id)}
+                          onClick={() => handleRemove(item._id)}
                           className="p-2 rounded hover:bg-red-100"
                         >
                           <svg
@@ -325,22 +336,36 @@ export default function MenuPage() {
                   ))}
                 </ul>
 
-                <hr className="my-4" />
-
-                <h2 className="text-lg font-semibold">Total: ${totalPrice}</h2>
+                <h2 className="text-lg font-semibold my-4">Total: ${totalPrice}</h2>
               </SheetHeader>
-              <div className="fixed bottom-0 p-4 w-full">
+              <div className="fixed bottom-0 p-5 w-full">
                 <button
                   onClick={() => console.log('Pedido confirmado!')}
                   className="mt-4 w-full bg-black text-white py-2 rounded-xl"
                 >
-                  Confirmar pedido
+                  Confirmar orden
                 </button>
               </div>
             </SheetContent>
           </Sheet>
 
-
+          <Dialog
+            open={openConfirmModal}
+            onOpenChange={() => setOpenConfirmModal(false)}
+          >
+            <DialogContent>
+              <DialogTitle>Eliminar producto</DialogTitle>
+              <DialogDescription>
+                Estas seguro?
+              </DialogDescription>
+              <DialogFooter>
+                <Button onClick={() => setOpenConfirmModal(false)}>Cancel</Button>
+                <Button onClick={confirmRemove} color="error">
+                  Remove
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
 
 
           {totalItems > 0 && (

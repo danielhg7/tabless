@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { Box, Typography, List, ListItem, ListItemText, Divider, Button, TextField, IconButton, Container, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
+import { Box, Typography, List, ListItem, ListItemText, Divider, Button, TextField, IconButton, Container } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
@@ -9,6 +9,7 @@ import { useState } from "react";
 import { CartItem } from "@/interfaces/CartItem";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/navigation';
+import { Dialog, DialogContent, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 
 
 export default function PedidoPage() {
@@ -18,10 +19,10 @@ export default function PedidoPage() {
   const router = useRouter();
 
 
-  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const total = cart.reduce((acc, item) => acc + item.price * item.count, 0);
 
   const onDecrease = (item: CartItem) => {
-    if(item.quantity > 1) {
+    if(item.count > 1) {
       handleDecrease(item.id)
     } else {
       setProductToDelete(item.id);
@@ -52,20 +53,20 @@ export default function PedidoPage() {
     <Container maxWidth={false} sx={{ py: 4, maxWidth: "1600px" }}>
       <Dialog
         open={openConfirmModal}
-        onClose={() => setOpenConfirmModal(false)}
+        onOpenChange={() => setOpenConfirmModal(false)}
       >
         <DialogTitle>Remove product?</DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogTitle>
             Are you sure?
-          </DialogContentText>
+          </DialogTitle>
         </DialogContent>
-        <DialogActions>
+        <DialogFooter>
           <Button onClick={() => setOpenConfirmModal(false)}>Cancel</Button>
           <Button onClick={confirmRemove} color="error" variant="contained">
             Remove
           </Button>
-        </DialogActions>
+        </DialogFooter>
       </Dialog>
       <Box p={4}>
         <Box display="flex" alignItems="center" mb={2}>
@@ -95,7 +96,7 @@ export default function PedidoPage() {
                       <RemoveIcon />
                     </IconButton>
                     <TextField
-                      value={item.quantity}
+                      value={item.count}
                       size="small"
                       variant="outlined"
                       slotProps={{ htmlInput: { min: 1, style: { textAlign: 'center', width: '4vh' }} }}
@@ -109,8 +110,8 @@ export default function PedidoPage() {
                   </>
                 }>
                   <ListItemText
-                    primary={`${item.name} x${item.quantity}`}
-                    secondary={`$${item.price * item.quantity}`}
+                    primary={`${item.name} x${item.count}`}
+                    secondary={`$${item.price * item.count}`}
                   />
                 </ListItem>
               ))}
