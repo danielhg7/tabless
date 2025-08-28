@@ -1,5 +1,4 @@
 import { Item } from "@/interfaces/Item";
-import { useCart } from "@/context/CartContext";
 import { Plus } from "lucide-react";
 
 interface Props {
@@ -7,7 +6,6 @@ interface Props {
 }
 
 export const ItemCard = ({ item }: Props) => {
-  const { addToCart } = useCart();
 
   return (
     <div
@@ -59,8 +57,6 @@ export const ItemCard = ({ item }: Props) => {
           className="absolute bg-black text-white rounded-full p-2 shadow-lg transition m-1 w-[36px]"
           onClick={(e) => {
             e.stopPropagation();
-            console.log(item.id);
-            addToCart(item);
           }}>
             {item.count === 0 && <Plus size={20} />}
             {item.count > 0 && item.count}

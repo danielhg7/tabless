@@ -8,7 +8,7 @@ import { useCart } from "@/context/CartContext";
 
 export const Header = () => {
   const { cart } = useCart();
-  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const totalItems = cart.reduce((acc, item) => acc + item.count, 0);
 
   return (
     <AppBar position="sticky" sx={{ bgcolor: '#2C3E50' }}>

@@ -19,30 +19,31 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const addToCart = (item: Item | null) => {
+    console.log("Adding item to cart: ", item)
     if(item) {
       setCart((prev) => {
-        const existing = prev.find((i) => i.id === item.id);
+        const existing = prev.find((i) => i._id === item._id);
         if (existing) {
           return prev.map((i) =>
-            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+            i._id === item._id ? { ...i, count: i.count + 1 } : i
           );
         } else {
-          return [...prev, { ...item, quantity: 1 }];
+          return [...prev, { ...item, count: 1 }];
         }
       });
     }
   };
 
   const removeFromCart = (id: string) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+    setCart((prev) => prev.filter((item) => item._id !== id));
   };
 
 
   const handleDecrease = (id: string) => {
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
+        item._id === id && item.count > 1
+          ? { ...item, count: item.count - 1 }
           : item
       )
     );
@@ -51,8 +52,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const handleIncrease = (id: string) => {
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id && item.quantity >= 0
-          ? { ...item, quantity: item.quantity + 1 }
+        item._id === id && item.count >= 0
+          ? { ...item, count: item.count + 1 }
           : item
       )
     );

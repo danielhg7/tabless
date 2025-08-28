@@ -15,6 +15,8 @@ import React from "react"
 import { useRestaurant } from "@/context/RestaurantContext"
 import { ShoppingCartIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { CartItem } from "@/interfaces/CartItem";
+
 import {
   Sheet,
   SheetContent,
@@ -33,15 +35,18 @@ export default function MenuPage() {
   const [menu, setMenu] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState(0);
-  const { addToCart } = useCart();
-
   // const router = useRouter();
-  const { cart } = useCart();
+
+  const { cart, removeFromCart, handleDecrease, handleIncrease, addToCart } = useCart();
   const sectionRefs = useRef<Record<string, React.RefObject<HTMLDivElement | null>>>({});
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<string | null>(null);
 
-  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const totalItems = cart.reduce((acc, item) => acc + item.count, 0);
 
+  const totalPrice = cart.reduce((acc, item) => acc + item.price * item.count, 0);
 
   useEffect(() => {
     async function fetchMenu() {
@@ -95,6 +100,10 @@ export default function MenuPage() {
     }
   };
 
+  const handleSeeOrder = () => {
+    setSelectedOrder(true)
+  }
+
 /*   const handleCategoryChange = (event: SelectChangeEvent<string>) => {
     const selectedId = event.target.value;
     const category = categories.find((c) => c.id === selectedId);
@@ -113,7 +122,50 @@ export default function MenuPage() {
       console.log("SelectedItem: ", selectedItem)
       addToCart(selectedItem)
       setSelectedItem(null);
+      console.log(cart);
     }
+  }
+
+  const onDecrease = (cartItem: CartItem) => {
+    if(cartItem.count == 0) {
+      return
+    } else if(cartItem.count > 1) {
+      handleDecrease(cartItem._id)
+    } else {
+      setProductToDelete(cartItem.id);
+      setOpenConfirmModal(true);
+    }
+    for (const subcategory of subcategories) {
+      const item = subcategory.items.find(item => item._id === cartItem._id);
+      
+      if (item) {
+        item.count = (item.count || 0) - 1;
+        return;
+      }
+    }
+  };
+
+  const onIncrease = (id: string) => {
+    handleIncrease(id)
+    for (const subcategory of subcategories) {
+      const item = subcategory.items.find(item => item._id === id);
+      
+      if (item) {
+        item.count = (item.count || 0) + 1;
+        return;
+      }
+    }
+  }
+
+  const handleRemove = (id: string) => {
+    setProductToDelete(id);
+    setOpenConfirmModal(true);
+  }
+
+  const confirmRemove = () => {
+    removeFromCart(String(productToDelete))
+    setOpenConfirmModal(false);
+    setProductToDelete(null);
   }
 
   return (
@@ -208,12 +260,92 @@ export default function MenuPage() {
             </SheetContent>
           </Sheet>
 
+          <Sheet open={!!selectedOrder} onOpenChange={() => setSelectedOrder(false)}>
+            <SheetContent side="bottom" className="h-[80vh] rounded-t-2xl">
+              <SheetHeader>
+                <ul>
+                  {cart.map((item) => (
+                    <li
+                      key={item.id}
+                      className="flex items-center justify-between border-b border-gray-200 py-2"
+                    >
+                      {/* Texto del producto */}
+                      <div>
+                        <p className="font-medium text-gray-800">
+                          {item.name} x{item.count}
+                        </p>
+                        <p className="text-sm text-gray-500">${item.price * item.count}</p>
+                      </div>
+
+                      {/* Acciones */}
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => onDecrease(item)}
+                          className="p-1 rounded hover:bg-gray-100"
+                        >
+                          <span className="text-gray-600">−</span>
+                        </button>
+
+                        <input
+                          type="number"
+                          min={1}
+                          value={item.count}
+                          readOnly
+                          className="w-12 text-center border border-gray-300 rounded"
+                        />
+
+                        <button
+                          onClick={() => onIncrease(item._id)}
+                          className="p-1 rounded hover:bg-gray-100"
+                        >
+                          <span className="text-gray-600">+</span>
+                        </button>
+
+                        <button
+                          onClick={() => handleRemove(item.id)}
+                          className="p-2 rounded hover:bg-red-100"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 text-[#2C3E50]"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-4 0a1 1 0 00-1 1v1h6V4a1 1 0 00-1-1m-4 0h4"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+
+                <hr className="my-4" />
+
+                <h2 className="text-lg font-semibold">Total: ${totalPrice}</h2>
+              </SheetHeader>
+              <div className="fixed bottom-0 p-4 w-full">
+                <button
+                  onClick={() => console.log('Pedido confirmado!')}
+                  className="mt-4 w-full bg-black text-white py-2 rounded-xl"
+                >
+                  Confirmar pedido
+                </button>
+              </div>
+            </SheetContent>
+          </Sheet>
+
 
 
 
           {totalItems > 0 && (
             <Button
-              onClick={() => console.log("Cart is ready")}
+              onClick={handleSeeOrder}
               className="
               fixed
               bottom-[20px]
