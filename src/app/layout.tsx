@@ -5,6 +5,7 @@ import { CartProvider } from "@/context/CartContext";
 import { RestaurantProvider } from "@/context/RestaurantContext";
 import RestaurantHeader from "@/components/RestaurantHeader";
 import Footer from "@/components/Footer";
+import { Toaster } from "sonner"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
           <CartProvider>
             <RestaurantHeader />
               {children}
+              <Toaster richColors position="top-center" theme="dark" /> {/* 👈 Aquí */}
             <Footer />
           </CartProvider>
         </RestaurantProvider>

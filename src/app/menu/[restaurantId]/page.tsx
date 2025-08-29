@@ -206,6 +206,7 @@ export default function MenuPage() {
             Ver pedido ({totalItems})
           </Button>
         )}
+
       </Container>
     </>
   );

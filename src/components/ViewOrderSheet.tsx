@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/sheet"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 import { useCart } from "@/context/CartContext";
 import { CartItem } from "@/interfaces/CartItem";
 import { Subcategory } from "@/interfaces/Subcategory";
@@ -19,12 +20,13 @@ interface Props {
 
 export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props) => {
 
-    const [openConfirmModal, setOpenConfirmModal] = useState(false);
+    const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
     const [productToDelete, setProductToDelete] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false)
 
     const { cart, removeFromCart, handleDecrease, handleIncrease } = useCart();
     const totalPrice = cart.reduce((acc, item) => acc + item.price * item.count, 0);
-    
+
     const onDecrease = (cartItem: CartItem) => {
         if (cartItem.count == 0) {
             return
@@ -40,7 +42,7 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
             }
         } else {
             setProductToDelete(cartItem._id);
-            setOpenConfirmModal(true);
+            setOpenConfirmDeleteModal(true);
         }
     };
 
@@ -58,12 +60,12 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
 
     const handleRemove = (id: string) => {
         setProductToDelete(id);
-        setOpenConfirmModal(true);
+        setOpenConfirmDeleteModal(true);
     }
 
     const confirmRemove = () => {
         removeFromCart(String(productToDelete))
-        setOpenConfirmModal(false);
+        setOpenConfirmDeleteModal(false);
         setProductToDelete(null);
         for (const subcategory of subcategories) {
           const item = subcategory.items.find(item => item._id === productToDelete);
@@ -73,7 +75,25 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
             return;
           }
         }
-      }
+    }
+
+    const handleConfirmOrder = () => {
+        setLoading(true)
+        // Simula llamada al backend
+        setTimeout(() => {
+            setLoading(false)
+    
+            // Mostrar mensaje de éxito
+            toast("Orden generada!", {
+                description: "Tu orden fue recibida por el restaurante.",
+            })
+    
+            // Redirigir al checkout después de 2 segundos
+            setTimeout(() => {
+                window.location.href = "/payment"
+            }, 2000)
+        }, 1500)
+    }
 
     return (
         <>
@@ -81,7 +101,7 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
                 <SheetContent side="bottom" className="h-[80vh] rounded-t-2xl">
                     <SheetHeader className="p-5">
                         <SheetTitle>
-                            <h2>Confirmación de orden</h2>
+                            Confirmación de orden
                         </SheetTitle>
                         <hr className="my-3" />
                         <ul>
@@ -150,18 +170,19 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
                     </SheetHeader>
                     <div className="fixed bottom-0 p-5 w-full">
                         <button
-                            onClick={() => console.log('Pedido confirmado!')}
+                            onClick={handleConfirmOrder}
+                            disabled={loading}
                             className="mt-4 w-full bg-black text-white py-2 rounded-xl"
                         >
-                            Confirmar orden
+                            {loading ? 'Procesando...' : 'Confirmar orden'}
                         </button>
                     </div>
                 </SheetContent>
             </Sheet>
 
             <Dialog
-            open={openConfirmModal}
-            onOpenChange={() => setOpenConfirmModal(false)}
+            open={openConfirmDeleteModal}
+            onOpenChange={() => setOpenConfirmDeleteModal(false)}
             >
                 <DialogContent>
                     <DialogTitle>Eliminar producto</DialogTitle>
@@ -169,9 +190,9 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
                         Estas seguro?
                     </DialogDescription>
                     <DialogFooter>
-                        <Button onClick={() => setOpenConfirmModal(false)}>Cancel</Button>
+                        <Button onClick={() => setOpenConfirmDeleteModal(false)}>Cancelar</Button>
                         <Button onClick={confirmRemove} color="error">
-                            Remove
+                            Eliminar
                         </Button>
                     </DialogFooter>
                 </DialogContent>
