@@ -81,6 +81,7 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
         setLoading(true)
         // Simula llamada al backend
         setTimeout(() => {
+            setSelectedOrder(false)
             setLoading(false)
     
             // Mostrar mensaje de éxito
@@ -92,7 +93,7 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
             setTimeout(() => {
                 window.location.href = "/payment"
             }, 2000)
-        }, 1500)
+        }, 1000)
     }
 
     return (
