@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { Box, Typography, List, ListItem, ListItemText, Divider, Button, TextField, IconButton, Container } from "@mui/material";
+import { Box, Typography, List, ListItem, ListItemText, Divider, Button, TextField, IconButton, Container, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
@@ -9,7 +9,6 @@ import { useState } from "react";
 import { CartItem } from "@/interfaces/CartItem";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/navigation';
-import { Dialog, DialogContent, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 
 
 export default function PedidoPage() {
@@ -53,20 +52,20 @@ export default function PedidoPage() {
     <Container maxWidth={false} sx={{ py: 4, maxWidth: "1600px" }}>
       <Dialog
         open={openConfirmModal}
-        onOpenChange={() => setOpenConfirmModal(false)}
+        onClose={() => setOpenConfirmModal(false)}
       >
         <DialogTitle>Remove product?</DialogTitle>
         <DialogContent>
-          <DialogTitle>
+          <DialogContentText>
             Are you sure?
-          </DialogTitle>
+          </DialogContentText>
         </DialogContent>
-        <DialogFooter>
+        <DialogActions>
           <Button onClick={() => setOpenConfirmModal(false)}>Cancel</Button>
           <Button onClick={confirmRemove} color="error" variant="contained">
             Remove
           </Button>
-        </DialogFooter>
+        </DialogActions>
       </Dialog>
       <Box p={4}>
         <Box display="flex" alignItems="center" mb={2}>
