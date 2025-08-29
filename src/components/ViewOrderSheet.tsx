@@ -11,6 +11,7 @@ import { useCart } from "@/context/CartContext";
 import { CartItem } from "@/interfaces/CartItem";
 import { Subcategory } from "@/interfaces/Subcategory";
 import { useState } from "react";
+import { useRouter } from 'next/navigation'
 
 interface Props {
     order: boolean
@@ -26,6 +27,7 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
 
     const { cart, removeFromCart, handleDecrease, handleIncrease } = useCart();
     const totalPrice = cart.reduce((acc, item) => acc + item.price * item.count, 0);
+    const router = useRouter();
 
     const onDecrease = (cartItem: CartItem) => {
         if (cartItem.count == 0) {
@@ -84,14 +86,13 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
             setSelectedOrder(false)
             setLoading(false)
     
-            // Mostrar mensaje de éxito
             toast("Orden generada!", {
                 description: "Tu orden fue recibida por el restaurante.",
             })
     
             // Redirigir al checkout después de 2 segundos
             setTimeout(() => {
-                window.location.href = "/payment"
+                router.push('/payment')
             }, 2000)
         }, 1000)
     }

@@ -1,59 +1,64 @@
 "use client";
 
-import Footer from "@/components/Footer";
-import { useRestaurant } from "@/context/RestaurantContext";
+import { useCart } from "@/context/CartContext";
 
 export default function PaymentPage() {
-  const { restaurant } = useRestaurant();
+
+  const { cart } = useCart();
+  const totalPrice = cart.reduce((acc, item) => acc + item.price * item.count, 0);
 
   return (
-    <div className="min-h-screen pb-16 flex flex-col items-center justify-start bg-gray-50">
-      {/* Header */}
-      <div className="w-full bg-white shadow p-4 flex items-center justify-center">
-        <h1 className="text-xl font-bold">
-          {restaurant ? `Pago en ${restaurant.name}` : "Pago"}
-        </h1>
-      </div>
+    <div className="flex flex-col min-h-screen px-4 py-8 justify-center">
 
-      {/* Contenido de pago */}
-      <div className="flex flex-col items-center mt-8 w-full px-4 space-y-4">
-        <p className="text-gray-600 text-center">
-          Aquí irá el flujo de pago 💳. Puedes agregar:  
-          tarjeta, métodos de pago, resumen del pedido, etc.
-        </p>
-
-        <div className="w-full max-w-md bg-white rounded-lg shadow p-6 space-y-4">
-          <input
-            type="text"
-            placeholder="Nombre en la tarjeta"
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="text"
-            placeholder="Número de tarjeta"
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <div className="flex space-x-4">
-            <input
-              type="text"
-              placeholder="MM/AA"
-              className="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              type="text"
-              placeholder="CVV"
-              className="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+      {/* Contenido principal */}
+      <main className="flex-2 p-4 space-y-6 justify-center">
+        {/* Info mesa y total */}
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-gray-600">Mesa 12</p>
+            <p className="text-xl font-semibold">Monto a pagar</p>
           </div>
+          <p className="text-xl font-semibold">${totalPrice.toLocaleString()}</p>
+        </div>
 
-          <button className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition">
-            Pagar
+        {/* Lista de items */}
+        <div className="space-y-3">
+          {cart.map((item, idx) => (
+            <div
+              key={idx}
+              className="flex items-center justify-between border-b pb-2"
+            >
+              <div className="flex items-center gap-2">
+                <span className="font-medium">{item.count}x</span>
+                <span>{item.name}</span>
+              </div>
+              <span className="font-semibold">
+                ${(item.count * item.price).toLocaleString()}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Mensaje de seguridad */}
+        {/*<p className="text-center text-sm text-gray-500">
+          Pago realizado de forma segura por <span className="font-semibold">Tabless</span>.
+        </p>
+        <hr/>
+        <p className="text-center text-sm text-gray-500">
+          Al utilizar la aplicación <span className="font-semibold">Tabless</span>, aceptas nuestras condiciones de uso y
+           el tratamiento de tus datos personales de conformidad con nuestra política de privacidad. 
+           Tu información es recopilada en nombre del restaurante y será compartida con este.
+        </p>*/}
+
+        <div className="fixed bottom-22 left-0 right-0 flex justify-center">
+          <button
+                  onClick={() => console.log("Pagando!")}
+                  className="w-3/4 bg-black text-white py-2 rounded-xl"
+              >
+                  {'Pagar o dividir cuenta'}
           </button>
         </div>
-      </div>
-
-      {/* Footer */}
-      <Footer />
+      </main>
     </div>
   );
 }
