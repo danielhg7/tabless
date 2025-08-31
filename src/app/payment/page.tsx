@@ -1,11 +1,14 @@
 "use client";
 
+import { PaySplitBillSheet } from "@/components/PaySplitBillSheet";
 import { useCart } from "@/context/CartContext";
+import { useState } from "react";
 
 export default function PaymentPage() {
 
   const { cart } = useCart();
   const totalPrice = cart.reduce((acc, item) => acc + item.price * item.count, 0);
+  const [clickPay, setClickPay] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen px-4 py-8 justify-center">
@@ -41,13 +44,15 @@ export default function PaymentPage() {
 
         <div className="fixed bottom-22 left-0 right-0 flex justify-center">
           <button
-                  onClick={() => console.log("Pagando!")}
+                  onClick={() => setClickPay(true)}
                   className="w-3/4 bg-black text-white py-2 rounded-xl"
               >
                   {'Pagar o dividir cuenta'}
           </button>
         </div>
       </main>
+
+      <PaySplitBillSheet clickPay={clickPay} setClickPay={setClickPay} />
     </div>
   );
 }
