@@ -26,21 +26,21 @@ export const ItemSelectedSheet = ({ item, setSelectedItem, addItem }: Props) => 
             />
             </div>}
             <SheetHeader>
-            <SheetTitle>{item?.name}</SheetTitle>
-            <SheetDescription>
+              <SheetTitle>{item?.name}</SheetTitle>
+              <SheetDescription>
                 {item?.description}
-            </SheetDescription>
+              </SheetDescription>
             </SheetHeader>
             <div className="fixed bottom-0 p-4 w-full">
-            <p className="mt-2 font-bold text-lg">${item?.price}</p>
-            <button className="mt-4 w-full bg-black text-white py-2 rounded-xl" 
-            onClick={(e) => {
+              <p className="mt-2 font-bold text-lg">${item?.price}</p>
+              <button className="mt-4 w-full bg-black text-white py-2 rounded-xl" 
+              onClick={(e) => {
                 e.stopPropagation();
                 console.log(item?._id);
                 addItem();
-            }}>
+              }}>
                 Agregar al carrito
-            </button>
+              </button>
             </div>
         </SheetContent>
     </Sheet>

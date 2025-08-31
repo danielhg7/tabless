@@ -39,17 +39,6 @@ export default function PaymentPage() {
           ))}
         </div>
 
-        {/* Mensaje de seguridad */}
-        {/*<p className="text-center text-sm text-gray-500">
-          Pago realizado de forma segura por <span className="font-semibold">Tabless</span>.
-        </p>
-        <hr/>
-        <p className="text-center text-sm text-gray-500">
-          Al utilizar la aplicación <span className="font-semibold">Tabless</span>, aceptas nuestras condiciones de uso y
-           el tratamiento de tus datos personales de conformidad con nuestra política de privacidad. 
-           Tu información es recopilada en nombre del restaurante y será compartida con este.
-        </p>*/}
-
         <div className="fixed bottom-22 left-0 right-0 flex justify-center">
           <button
                   onClick={() => console.log("Pagando!")}
