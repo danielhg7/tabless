@@ -15,7 +15,7 @@ interface Props {
 export const PaySplitBillSheet = ({clickPay, setClickPay}: Props) => {
 
     const [clickSplit, setClickSplit] = useState(false);
-    const [clickFullBill, setClickFullBill] = useState(false);
+    // const [clickFullBill, setClickFullBill] = useState(false);
   
     const handleOpenSplitBill = () => {
         setClickSplit(true)

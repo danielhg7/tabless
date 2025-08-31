@@ -18,7 +18,7 @@ export const SplitBillSheet = ({clickSplit, setClickSplit}: Props) => {
 
     return (
         <Sheet open={!!clickSplit} onOpenChange={() => setClickSplit(false)}>
-            <SheetContent side="bottom" className="h-[40vh] rounded-t-2xl">
+            <SheetContent side="bottom" className="h-[34vh] rounded-t-2xl">
                 <SheetHeader>
                 <SheetTitle>{'Divide la cuenta'}</SheetTitle>
                 </SheetHeader>
