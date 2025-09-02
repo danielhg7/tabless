@@ -93,7 +93,7 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
             setLoading(false)
     
             toast("Orden generada!", {
-                description: "Tu orden fue recibida por el restaurante.",
+                description: "Tu orden fue enviada al restaurante.",
             })
     
             // Redirigir al checkout después de 2 segundos
