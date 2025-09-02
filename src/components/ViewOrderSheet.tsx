@@ -22,6 +22,7 @@ interface Props {
 export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props) => {
 
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
+    const [openFinalConfirmModal, setOpenFinalConfirmModal] = useState(false);
     const [productToDelete, setProductToDelete] = useState<string | null>(null);
     const [loading, setLoading] = useState(false)
 
@@ -79,8 +80,13 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
         }
     }
 
+    const handleOpenFinalConfirmModal = () => {
+        setOpenFinalConfirmModal(true)
+    }
+
     const handleConfirmOrder = () => {
         setLoading(true)
+        setOpenFinalConfirmModal(false)
         // Simula llamada al backend
         setTimeout(() => {
             setSelectedOrder(false)
@@ -172,7 +178,7 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
                     </SheetHeader>
                     <div className="fixed bottom-0 p-5 w-full">
                         <button
-                            onClick={handleConfirmOrder}
+                            onClick={handleOpenFinalConfirmModal}
                             disabled={loading}
                             className="mt-4 w-full bg-black text-white py-2 rounded-xl"
                         >
@@ -187,15 +193,33 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
             onOpenChange={() => setOpenConfirmDeleteModal(false)}
             >
                 <DialogContent>
-                    <DialogTitle>Eliminar producto</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle className="text-center">Eliminar producto</DialogTitle>
+                    <DialogDescription className="text-center">
                         Estas seguro?
                     </DialogDescription>
-                    <DialogFooter>
-                        <Button onClick={() => setOpenConfirmDeleteModal(false)}>Cancelar</Button>
-                        <Button onClick={confirmRemove} color="error">
+                    <DialogFooter className='grid grid-cols-2 px-6'>
+                        <Button className='bg-blue-700 text-white font-bold w-full' onClick={confirmRemove} color="error">
                             Eliminar
                         </Button>
+                        <Button className='bg-red-700 text-white font-bold w-full' onClick={() => setOpenConfirmDeleteModal(false)}>Cancelar</Button> 
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog
+            open={openFinalConfirmModal}
+            onOpenChange={() => setOpenFinalConfirmModal(false)}
+            >
+                <DialogContent>
+                    <DialogTitle className="text-center">Confirmar orden</DialogTitle>
+                    <DialogDescription className="text-center">
+                        Una vez confirmes, tu orden será enviada al restaurante para su preparación. Deseas continuar?
+                    </DialogDescription>
+                    <DialogFooter className='grid grid-cols-2 px-4'>
+                        <Button className='bg-green-700 text-white font-bold w-full' onClick={handleConfirmOrder}>
+                            Confirmar
+                        </Button>
+                        <Button className='bg-red-700 text-white font-bold w-full' onClick={() => setOpenFinalConfirmModal(false)}>Cancelar</Button>  
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
