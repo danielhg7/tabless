@@ -33,7 +33,10 @@ export default function MenuPage() {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [selectedOrder, setSelectedOrder] = useState(false);
 
-  const totalItems = cart.reduce((acc, item) => acc + item.count, 0);
+  const totalItems = cart.reduce(
+    (acc, item) => acc + (item.status === "ADDED" ? item.count : 0),
+    0
+  );
 
   useEffect(() => {
     async function fetchMenu() {

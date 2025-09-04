@@ -39,7 +39,7 @@ export const ItemSelectedSheet = ({ item, setSelectedItem, addItem }: Props) => 
                 console.log(item?._id);
                 addItem();
               }}>
-                Agregar al carrito
+                Agregar al pedido
               </button>
             </div>
         </SheetContent>

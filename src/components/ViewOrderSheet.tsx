@@ -26,8 +26,12 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
     const [productToDelete, setProductToDelete] = useState<string | null>(null);
     const [loading, setLoading] = useState(false)
 
-    const { cart, removeFromCart, handleDecrease, handleIncrease } = useCart();
-    const totalPrice = cart.reduce((acc, item) => acc + item.price * item.count, 0);
+    const { cart, removeFromCart, handleDecrease, handleIncrease, changeStatus } = useCart();
+
+    const totalPrice = cart.reduce(
+        (acc, item) => acc + (item.status === "ADDED" ? item.price * item.count : 0),
+        0
+    );
     const router = useRouter();
 
     const onDecrease = (cartItem: CartItem) => {
@@ -91,9 +95,10 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
         setTimeout(() => {
             setSelectedOrder(false)
             setLoading(false)
+            changeStatus('ORDERED')
     
-            toast("Orden generada!", {
-                description: "Tu orden fue enviada al restaurante.",
+            toast("Pedido generado!", {
+                description: "Tu pedido fue enviado al restaurante.",
             })
     
             // Redirigir al checkout después de 2 segundos
@@ -106,75 +111,94 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
     return (
         <>
             <Sheet open={!!order} onOpenChange={() => setSelectedOrder(false)}>
-                <SheetContent side="bottom" className="h-[80vh] rounded-t-2xl">
+                <SheetContent side="bottom" className="h-[80vh] rounded-t-2xl m-1">
                     <SheetHeader className="p-5">
                         <SheetTitle>
-                            Confirmación de orden
+                            Confirmación de pedido
                         </SheetTitle>
                         <hr className="my-3" />
                         <ul>
                             {cart.map((item) => (
-                                <li
-                                    key={item._id}
-                                    className="flex items-center justify-between border-b border-gray-200 py-2"
+                                item.status === 'ADDED' && <li
+                                    key={`${item._id}-${item.status}`}
+                                    className={`flex items-center justify-between border-b border-gray-200 py-2`}
                                 >
-                                    {/* Texto del producto */}
-                                    <div>
-                                        <p className="font-medium text-gray-800">
-                                            {item.name} x{item.count}
-                                        </p>
-                                        <p className="text-sm text-gray-500">${item.price * item.count}</p>
-                                    </div>
+                                        <div className="ml-3">
+                                            <p className="font-medium text-gray-800">
+                                                {item.name} x{item.count}
+                                            </p>
+                                            <p className="text-sm text-gray-500">${item.price * item.count}</p>
+                                        </div>
 
-                                    {/* Acciones */}
-                                    <div className="flex items-center space-x-2">
-                                        <button
-                                            onClick={() => onDecrease(item)}
-                                            className="p-1 rounded hover:bg-gray-100"
-                                        >
-                                            <span className="text-gray-600">−</span>
-                                        </button>
+                                        {/* Acciones */}
+                                        <div className="flex items-center space-x-2">
+                                            {item.status === 'ADDED' && 
+                                            
+                                            <>
+                                                <button
+                                                    onClick={() => onDecrease(item)}
+                                                    className="p-1 rounded hover:bg-gray-100"
+                                                >
+                                                    <span className="text-gray-600">−</span>
+                                                </button>
 
-                                        <input
-                                            type="number"
-                                            min={1}
-                                            value={item.count}
-                                            readOnly
-                                            className="w-12 text-center border border-gray-300 rounded"
-                                        />
-
-                                        <button
-                                            onClick={() => onIncrease(item._id)}
-                                            className="p-1 rounded hover:bg-gray-100"
-                                        >
-                                            <span className="text-gray-600">+</span>
-                                        </button>
-
-                                        <button
-                                            onClick={() => handleRemove(item._id)}
-                                            className="p-2 rounded hover:bg-red-100"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="h-5 w-5 text-[#2C3E50]"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-4 0a1 1 0 00-1 1v1h6V4a1 1 0 00-1-1m-4 0h4"
+                                                <input
+                                                    type="number"
+                                                    min={1}
+                                                    value={item.count}
+                                                    readOnly
+                                                    className="w-12 text-center border border-gray-300 rounded"
                                                 />
-                                            </svg>
-                                        </button>
-                                    </div>
+
+                                                <button
+                                                    onClick={() => onIncrease(item._id)}
+                                                    className="p-1 rounded hover:bg-gray-100"
+                                                >
+                                                    <span className="text-gray-600">+</span>
+                                                </button>
+
+                                                <button
+                                                    onClick={() => handleRemove(item._id)}
+                                                    className="p-2 rounded hover:bg-red-100"
+                                                >
+                                            
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-5 w-5 text-[#2C3E50]"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="2"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-4 0a1 1 0 00-1 1v1h6V4a1 1 0 00-1-1m-4 0h4"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </>
+                                            }
+
+                                            {/*item.status === 'ORDERED' && 
+                                            <div className='mr-3'>  
+
+                                                <input
+                                                    type="number"
+                                                    min={1}
+                                                    value={item.count}
+                                                    readOnly
+                                                    disabled
+                                                    className="w-12 text-center border border-gray-300 rounded"
+                                                />
+                                            </div>
+                                            */}
+                                        </div>
                                 </li>
                             ))}
                         </ul>
 
-                        <h2 className="text-lg font-semibold my-4">Total: ${totalPrice}</h2>
+                        <h2 className="text-lg font-semibold my-4 mx-3">Total: ${totalPrice}</h2>
                     </SheetHeader>
                     <div className="fixed bottom-0 p-5 w-full">
                         <button
@@ -182,7 +206,7 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
                             disabled={loading}
                             className="mt-4 w-full bg-black text-white py-2 rounded-xl"
                         >
-                            {loading ? 'Procesando...' : 'Confirmar orden'}
+                            {loading ? 'Procesando...' : 'Enviar pedido'}
                         </button>
                     </div>
                 </SheetContent>
@@ -211,9 +235,9 @@ export const ViewOrderSheet = ({ order, setSelectedOrder, subcategories }: Props
             onOpenChange={() => setOpenFinalConfirmModal(false)}
             >
                 <DialogContent>
-                    <DialogTitle className="text-center">Confirmar orden</DialogTitle>
+                    <DialogTitle className="text-center">Enviar pedido</DialogTitle>
                     <DialogDescription className="text-center">
-                        Una vez confirmes, tu orden será enviada al restaurante para su preparación. Deseas continuar?
+                        Una vez confirmes, tu pedido será enviado al restaurant para su preparación. Deseas continuar?
                     </DialogDescription>
                     <DialogFooter className='grid grid-cols-2 px-4'>
                         <Button className='bg-green-700 text-white font-bold w-full' onClick={handleConfirmOrder}>

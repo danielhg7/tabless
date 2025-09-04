@@ -19,15 +19,17 @@ export default function PaymentPage() {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-gray-600">Mesa 12</p>
-            <p className="text-xl font-semibold">Monto a pagar</p>
+            <p className="text-xl font-semibold">Por pagar</p>
           </div>
-          <p className="text-xl font-semibold">${totalPrice.toLocaleString()}</p>
+          <div className="mt-5">
+            <p className="text-xl font-semibold">${totalPrice.toLocaleString()}</p>
+          </div>
         </div>
 
         {/* Lista de items */}
         <div className="space-y-3">
           {cart.map((item, idx) => (
-            <div
+            item.status === 'ORDERED' && <div
               key={idx}
               className="flex items-center justify-between border-b pb-2"
             >
