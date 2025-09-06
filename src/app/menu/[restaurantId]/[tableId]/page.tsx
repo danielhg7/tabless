@@ -18,7 +18,7 @@ import { ItemSelectedSheet } from "@/components/ItemSelectedSheet";
 import { ViewOrderSheet } from "@/components/ViewOrderSheet";
 
 export default function MenuPage() {
-  const { restaurantId } = useParams();
+  const { restaurantId, tableId } = useParams();
   const { setRestaurant } = useRestaurant();
   const [categories, setCategories] = useState<CategoryDocument[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryDocument | null>(null);
@@ -41,17 +41,22 @@ export default function MenuPage() {
   useEffect(() => {
     async function fetchMenu() {
       try {
-        const res = await fetch(`/api/restaurants/menu?slug=${restaurantId}`);
-        const data = await res.json();
-        if (res.ok) {
-          setRestaurant(data.restaurant)
-          if (data.categories) {
-            setCategories(data.categories);
-            setSelectedCategory(data.categories[0])
-            setSubcategories(data.categories[0].subcategories)
+        const restaurantInfo = await fetch(`/api/restaurants/menu?slug=${restaurantId}`);
+        const restaurantData = await restaurantInfo.json();
+        if (restaurantInfo.ok) {
+          setRestaurant(restaurantData.restaurant)
+          if (restaurantData.categories) {
+            const tableInfo = await fetch(`/api/table?restaurantId=${restaurantData.restaurant._id}&tableId=${tableId}`)
+            const tableData = await tableInfo.json();
+            if(tableInfo.ok) {
+              setSelectedOrder(tableData.order)
+            }
+            setCategories(restaurantData.categories);
+            setSelectedCategory(restaurantData.categories[0])
+            setSubcategories(restaurantData.categories[0].subcategories)
           }
         } else {
-          console.error(data.error);
+          console.error(restaurantData.error);
           setMenu([]);
           setCategories([]);
           setRestaurant(null);
